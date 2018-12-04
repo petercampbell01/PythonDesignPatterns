@@ -1,0 +1,88 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+from cmd import Cmd
+import command_line_view as command_line
+__author__ = 'Peter Campbell'
+__copyright__ = 'Copyright 2018,BCPR301 Class Assignment 3'
+__credits__ = []
+__license__ = 'GPL'
+__version__ = '1.0.1'
+__maintainer__ = 'Peter Campbell'
+__email__ = 'peter@intrepid-adventure.com'
+__status__ = 'Development'
+
+
+class InteractiveShell(Cmd):
+
+    def __init__(self, command):
+        Cmd.__init__(self)
+        print('Welcome to the Python UML creator')
+        self.command = command
+        self.prompt = '>>> '
+        self.cmdloop('Starting prompt...\nType "help" for commands')
+
+    def do_validate(self, args):
+        '''
+        Validates single and multiple files as executable python code.
+        Command:
+        validate [filenames]
+        '''
+
+        self.command.validate_code(args)
+
+    def do_make_uml(self, filenames):
+        '''
+         Creates UML diagream from python code.
+         Command:
+         make_uml [filenames]
+         '''
+
+        self.command.create_class_diagram(filenames)
+
+    def do_save_to_csv(self, params='plants.py output.csv'):
+        '''
+        Saves specified file to csv.
+        Command:
+        save_to_csv [input_file] [output_file]
+        '''
+
+        self.command.create_csv(params)
+
+    def do_load_csv_for_uml(self, params='output.csv'):
+        '''
+        Loads csv file and creates UML diagram
+        Command:
+        load_csv_for_uml [file.csv]
+        '''
+
+        args = params.split(' ')
+        if len(args) >= 1:
+            input_file = args[0]
+        if input_file.endswith('.csv'):
+            self.command.load_csv_for_uml(input_file)
+
+    def do_pickle_file(self, filename='plants.py'):
+        '''
+        Load modules from single file and save them using pickle
+        Command:
+        pickle_modules [filename.py]
+        '''
+
+        self.command.pickle_module(filename)
+
+    def do_load_pickle_for_uml(self, params=None):
+        '''
+        Loads previously saved module using pickle
+        Command:
+        load_pickle_for_uml
+        '''
+
+        self.command.pickle_to_uml()
+
+    def do_quit(self, other):
+        '''
+        Quits programme.
+        '''
+
+        print('Goodbye ......')
+        return True
